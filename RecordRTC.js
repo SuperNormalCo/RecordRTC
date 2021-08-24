@@ -1,6 +1,6 @@
 'use strict';
 
-// Last time updated: 2021-08-24 11:42:10 AM UTC
+// Last time updated: 2021-08-24 11:43:57 AM UTC
 
 // ________________
 // RecordRTC v5.6.2

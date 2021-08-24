@@ -1,7 +1,5 @@
 'use strict';
 
-// Last time updated: 2021-08-24 11:43:57 AM UTC
-
 // ________________
 // RecordRTC v5.6.2
 
@@ -2374,18 +2372,30 @@ function MediaStreamRecorder(mediaStream, config) {
      * recorder.clearRecordedData();
      */
     this.clearRecordedData = function() {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            self.stop(clearRecordedDataCB);
+        }
+
         clearRecordedDataCB();
     };
 
     function clearRecordedDataCB() {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            arrayOfBlobs.shift();
-        } else {
-            mediaRecorder = null;
-            self.timestamps = [];
-            arrayOfBlobs = [];
-        }
+        arrayOfBlobs = [];
+        mediaRecorder = null;
+        self.timestamps = [];
     }
+
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          '---- flushing data. Total blobs to be flushed:',
+          arrayOfBlobs.length,
+        );
+      }
+  
+      arrayOfBlobs = [];
+      self.timestamps = [];
+    }  
 
     // Reference to "MediaRecorder" object
     var mediaRecorder;

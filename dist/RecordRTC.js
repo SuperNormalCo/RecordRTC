@@ -101,10 +101,8 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, process) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-// Last time updated: 2020-07-30 11:26:25 AM UTC
-
 // ________________
-// RecordRTC v5.6.1
+// RecordRTC v5.6.2
 
 // Open-Sourced: https://github.com/muaz-khan/RecordRTC
 
@@ -882,7 +880,7 @@ function RecordRTC(mediaStream, config) {
          * @example
          * alert(recorder.version);
          */
-        version: '5.6.1'
+        version: '5.6.2'
     };
 
     if (!this) {
@@ -900,7 +898,7 @@ function RecordRTC(mediaStream, config) {
     return returnObject;
 }
 
-RecordRTC.version = '5.6.1';
+RecordRTC.version = '5.6.2';
 
 if (true /* && !!module.exports*/ ) {
     module.exports = RecordRTC;
@@ -1917,7 +1915,10 @@ function invokeSaveAsDialog(file, fileName) {
     }
 
     var fileExtension = (file.type || 'video/webm').split('/')[1];
-
+    if (fileExtension.indexOf(';') !== -1) {
+        // extended mimetype, e.g. 'video/webm;codecs=vp8,opus'
+        fileExtension = fileExtension.split(';')[0];
+    }
     if (fileName && fileName.indexOf('.') !== -1) {
         var splitted = fileName.split('.');
         fileName = splitted[0];
@@ -2473,18 +2474,30 @@ function MediaStreamRecorder(mediaStream, config) {
      * recorder.clearRecordedData();
      */
     this.clearRecordedData = function() {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            self.stop(clearRecordedDataCB);
+        }
+
         clearRecordedDataCB();
     };
 
     function clearRecordedDataCB() {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            arrayOfBlobs.shift();
-        } else {
-            mediaRecorder = null;
-            self.timestamps = [];
-            arrayOfBlobs = [];
-        }
+        arrayOfBlobs = [];
+        mediaRecorder = null;
+        self.timestamps = [];
     }
+
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          '---- flushing data. Total blobs to be flushed:',
+          arrayOfBlobs.length,
+        );
+      }
+  
+      arrayOfBlobs = [];
+      self.timestamps = [];
+    }  
 
     // Reference to "MediaRecorder" object
     var mediaRecorder;
@@ -2858,7 +2871,7 @@ function StereoAudioRecorder(mediaStream, config) {
             view.setUint32(24, sampleRate, true);
 
             // byte rate (sample rate * block align)
-            view.setUint32(28, sampleRate * 2, true);
+            view.setUint32(28, sampleRate * numberOfAudioChannels * 2, true);
 
             // block align (channel count * bytes per sample) 
             view.setUint16(32, numberOfAudioChannels * 2, true);
@@ -6027,7 +6040,7 @@ function RecordRTCPromisesHandler(mediaStream, options) {
      * @example
      * alert(recorder.version);
      */
-    this.version = '5.6.1';
+    this.version = '5.6.2';
 }
 
 if (typeof RecordRTC !== 'undefined') {

@@ -1,6 +1,6 @@
 'use strict';
 
-// Last time updated: 2021-03-09 3:20:22 AM UTC
+// Last time updated: 2021-08-24 11:42:10 AM UTC
 
 // ________________
 // RecordRTC v5.6.2
@@ -2375,9 +2375,7 @@ function MediaStreamRecorder(mediaStream, config) {
      */
     this.clearRecordedData = function() {
         clearRecordedDataCB();
-        console.log('clearRecordedDataCB in recordRTC')
     };
-
 
     function clearRecordedDataCB() {
         if (mediaRecorder && mediaRecorder.state === 'recording') {

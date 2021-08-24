@@ -373,17 +373,17 @@ function MediaStreamRecorder(mediaStream, config) {
      * recorder.clearRecordedData();
      */
     this.clearRecordedData = function() {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            self.stop(clearRecordedDataCB);
-        }
-
         clearRecordedDataCB();
     };
 
     function clearRecordedDataCB() {
-        arrayOfBlobs = [];
-        mediaRecorder = null;
-        self.timestamps = [];
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            arrayOfBlobs.shift();
+        } else {
+            mediaRecorder = null;
+            self.timestamps = [];
+            arrayOfBlobs = [];
+        }
     }
 
     // Reference to "MediaRecorder" object

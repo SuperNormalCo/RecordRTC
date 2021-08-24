@@ -2387,6 +2387,18 @@ function MediaStreamRecorder(mediaStream, config) {
         }
     }
 
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          'Flushing data. Total blobs to be flushed:',
+          arrayOfBlobs.length,
+        );
+      }
+  
+      arrayOfBlobs = [];
+      self.timestamps = [];
+    }  
+
     // Reference to "MediaRecorder" object
     var mediaRecorder;
 

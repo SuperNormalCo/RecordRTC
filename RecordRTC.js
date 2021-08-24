@@ -2378,19 +2378,14 @@ function MediaStreamRecorder(mediaStream, config) {
         console.log('clearRecordedDataCB')
     };
 
-    this.removeOldestData = function() {
-        if (arrayOfBlobs.length > 1) {
-            arrayOfBlobs.shift()
-        }
-    }
 
     function clearRecordedDataCB() {
         if (mediaRecorder && mediaRecorder.state === 'recording') {
-            self.stop(clearRecordedDataCB);
-            arrayOfBlobs = []
+            arrayOfBlobs.shift();
         } else {
             mediaRecorder = null;
             self.timestamps = [];
+            arrayOfBlobs = [];
         }
     }
 

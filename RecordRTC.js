@@ -2375,7 +2375,7 @@ function MediaStreamRecorder(mediaStream, config) {
      */
     this.clearRecordedData = function() {
         clearRecordedDataCB();
-        console.log('clearRecordedDataCB')
+        console.log('clearRecordedDataCB in recordRTC')
     };
 
 

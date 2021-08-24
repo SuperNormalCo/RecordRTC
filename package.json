@@ -1,5 +1,5 @@
 {
-  "name": "recordrtc",
+  "name": "@supernormalco/recordrtc",
   "preferGlobal": false,
   "version": "5.6.3",
   "author": {

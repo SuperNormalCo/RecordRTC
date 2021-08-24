@@ -3,7 +3,7 @@
 // Last time updated: 2021-08-24 11:43:57 AM UTC
 
 // ________________
-// RecordRTC v5.6.2
+// RecordRTC v5.6.3
 
 // Open-Sourced: https://github.com/muaz-khan/RecordRTC
 
@@ -2386,6 +2386,18 @@ function MediaStreamRecorder(mediaStream, config) {
             arrayOfBlobs = [];
         }
     }
+
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          'Flushing data. Total blobs to be flushed:',
+          arrayOfBlobs.length,
+        );
+      }
+  
+      arrayOfBlobs = [];
+      self.timestamps = [];
+    }  
 
     // Reference to "MediaRecorder" object
     var mediaRecorder;

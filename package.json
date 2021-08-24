@@ -1,7 +1,7 @@
 {
   "name": "recordrtc",
   "preferGlobal": false,
-  "version": "5.6.2",
+  "version": "5.6.3",
   "author": {
     "name": "Muaz Khan",
     "email": "muazkh@gmail.com",
@@ -52,6 +52,5 @@
     "terser-webpack-plugin": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
-  },
-  "dependencies": {}
+  }
 }

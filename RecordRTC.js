@@ -3515,6 +3515,10 @@ function CanvasRecorder(htmlElement, config) {
         isPausedRecording = false;
     }
 
+    this.flushAllData = () => {
+      whammy.frames = []
+    }
+
     // for debugging
     this.name = 'CanvasRecorder';
     this.toString = function() {
@@ -3949,6 +3953,10 @@ function WhammyRecorder(mediaStream, config) {
         whammy.frames = [];
         isStopDrawing = true;
         isPausedRecording = false;
+    }
+
+    this.flushAllData = () => {
+      whammy.frames = []
     }
 
     // for debugging
@@ -4821,6 +4829,12 @@ function GifRecorder(mediaStream, config) {
         }
     }
 
+    this.flushAllData = () => {
+      if (gifEncoder) {
+        gifEncoder.stream().bin = [];
+      }
+    }
+
     // for debugging
     this.name = 'GifRecorder';
     this.toString = function() {
@@ -5617,6 +5631,12 @@ function MultiStreamRecorder(arrayOfMediaStreams, options) {
         }
     };
 
+    this.flushAllData = () => {
+      if (mediaRecorder) {
+        mediaRecorder.flushAllData();
+      }
+    }
+
     /**
      * Add extra media-streams to existing recordings.
      * @method
@@ -6229,6 +6249,10 @@ function WebAssemblyRecorder(stream, config) {
 
         // todo: if recording-ON then STOP it first
     };
+
+    this.flushAllData = () => {
+      arrayOfBuffers = []
+    }
 
     /**
      * @property {Blob} blob - The recorded blob object.

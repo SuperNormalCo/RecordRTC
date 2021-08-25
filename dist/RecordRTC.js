@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 // Last time updated: 2021-08-24 11:43:57 AM UTC
 
 // ________________
-// RecordRTC v5.6.3
+// RecordRTC v5.6.4
 
 // Open-Sourced: https://github.com/muaz-khan/RecordRTC
 
@@ -2492,7 +2492,7 @@ function MediaStreamRecorder(mediaStream, config) {
     this.flushAllData = () => {
       if (!config.disableLogs) {
         console.log(
-          'Flushing data. Total blobs to be flushed:',
+          'Flushing MediaRecorder data. Total blobs to be flushed:',
           arrayOfBlobs.length,
         );
       }
@@ -3194,6 +3194,29 @@ function StereoAudioRecorder(mediaStream, config) {
         }
 
         resetVariables();
+    }
+
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          'Flushing StereoRecorder data. Interval based buffers length to be flushed:',
+          intervalsBasedBuffers.recordingLength,
+        );
+      }
+
+      leftchannel = [];
+      rightchannel = [];
+      recordingLength = 0;
+
+      self.leftchannel = leftchannel;
+      self.rightchannel = rightchannel;
+      self.recordingLength = recordingLength;
+
+      intervalsBasedBuffers = {
+        left: [],
+        right: [],
+        recordingLength: 0
+      };    
     }
 
     // for debugging

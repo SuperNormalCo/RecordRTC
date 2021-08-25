@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 // Last time updated: 2021-08-24 11:43:57 AM UTC
 
 // ________________
-// RecordRTC v5.6.3
+// RecordRTC v5.6.4
 
 // Open-Sourced: https://github.com/muaz-khan/RecordRTC
 
@@ -2492,7 +2492,7 @@ function MediaStreamRecorder(mediaStream, config) {
     this.flushAllData = () => {
       if (!config.disableLogs) {
         console.log(
-          'Flushing data. Total blobs to be flushed:',
+          'Flushing MediaRecorder data. Total blobs to be flushed:',
           arrayOfBlobs.length,
         );
       }
@@ -3196,6 +3196,29 @@ function StereoAudioRecorder(mediaStream, config) {
         resetVariables();
     }
 
+    this.flushAllData = () => {
+      if (!config.disableLogs) {
+        console.log(
+          'Flushing StereoRecorder data. Interval based buffers length to be flushed:',
+          intervalsBasedBuffers.recordingLength,
+        );
+      }
+
+      leftchannel = [];
+      rightchannel = [];
+      recordingLength = 0;
+
+      self.leftchannel = leftchannel;
+      self.rightchannel = rightchannel;
+      self.recordingLength = recordingLength;
+
+      intervalsBasedBuffers = {
+        left: [],
+        right: [],
+        recordingLength: 0
+      };    
+    }
+
     // for debugging
     this.name = 'StereoAudioRecorder';
     this.toString = function() {
@@ -3592,6 +3615,10 @@ function CanvasRecorder(htmlElement, config) {
         whammy.frames = [];
         isRecording = false;
         isPausedRecording = false;
+    }
+
+    this.flushAllData = () => {
+      whammy.frames = []
     }
 
     // for debugging
@@ -4028,6 +4055,10 @@ function WhammyRecorder(mediaStream, config) {
         whammy.frames = [];
         isStopDrawing = true;
         isPausedRecording = false;
+    }
+
+    this.flushAllData = () => {
+      whammy.frames = []
     }
 
     // for debugging
@@ -4900,6 +4931,12 @@ function GifRecorder(mediaStream, config) {
         }
     }
 
+    this.flushAllData = () => {
+      if (gifEncoder) {
+        gifEncoder.stream().bin = [];
+      }
+    }
+
     // for debugging
     this.name = 'GifRecorder';
     this.toString = function() {
@@ -5697,6 +5734,12 @@ function MultiStreamRecorder(arrayOfMediaStreams, options) {
         }
     };
 
+    this.flushAllData = () => {
+      if (mediaRecorder) {
+        mediaRecorder.flushAllData();
+      }
+    }
+
     /**
      * Add extra media-streams to existing recordings.
      * @method
@@ -6309,6 +6352,10 @@ function WebAssemblyRecorder(stream, config) {
 
         // todo: if recording-ON then STOP it first
     };
+
+    this.flushAllData = () => {
+      arrayOfBuffers = []
+    }
 
     /**
      * @property {Blob} blob - The recorded blob object.

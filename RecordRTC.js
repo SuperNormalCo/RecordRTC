@@ -2387,14 +2387,7 @@ function MediaStreamRecorder(mediaStream, config) {
         }
     }
 
-    this.flushAllData = () => {
-      if (!config.disableLogs) {
-        console.log(
-          'Flushing MediaRecorder data. Total blobs to be flushed:',
-          arrayOfBlobs.length,
-        );
-      }
-  
+    this.flushAllData = () => {  
       arrayOfBlobs = [];
       self.timestamps = [];
     }  
@@ -3095,13 +3088,6 @@ function StereoAudioRecorder(mediaStream, config) {
     }
 
     this.flushAllData = () => {
-      if (!config.disableLogs) {
-        console.log(
-          'Flushing StereoRecorder data. Interval based buffers length to be flushed:',
-          intervalsBasedBuffers.recordingLength,
-        );
-      }
-
       leftchannel = [];
       rightchannel = [];
       recordingLength = 0;
